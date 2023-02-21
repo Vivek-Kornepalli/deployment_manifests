@@ -1,8 +1,8 @@
-node('jenkins-slave') {
+pipeline{
 
     agent{
         kubernetes{
-            yamlFile ''
+            yamlFile 'pod.yaml'
         }
     }
     stages{
