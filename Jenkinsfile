@@ -95,23 +95,30 @@ pipeline {
                 DOCKER_TAG = 'latest'
             }
             steps {
-                podTemplate(label: 'kaniko', containers: [
-                    containerTemplate(name: 'kaniko', image: 'gcr.io/kaniko-project/executor:latest', ttyEnabled: true, command: [
-                        '/busybox/sh', '-c'
-                    ], args: [
-                        '/kaniko/executor',
-                        '--dockerfile=/workspace/Dockerfile',
-                        '--context=/workspace',
-                        '--destination=$DOCKER_REGISTRY/$DOCKER_IMAGE:$DOCKER_TAG',
-                        '--insecure'
-                    ], volumeMounts: [
-                        mountVolume(mountPath: '/kaniko/.docker', name: 'kaniko-secret', readOnly: true)
-                    ], envVars: [
-                        secretEnvVar(secretName: 'kaniko-secret', key: '.dockerconfigjson', envVar: 'DOCKER_CONFIG')
-                    ], imagePullSecrets: [
-                        kubernetesPullSecret(secretName: 'regcred')
-                    ])
-                ]) 
+                podTemplate(yaml: '''
+//               kind: Pod
+//               spec:
+//                 containers:
+//                 - name: kaniko
+//                   image: gcr.io/kaniko-project/executor:v1.6.0-debug
+//                   imagePullPolicy: Always
+//                   command:
+//                   - sleep
+//                   args:
+//                   - 99d
+//                   volumeMounts:
+//                     - name: jenkins-docker-cfg
+//                       mountPath: /kaniko/.docker
+//                 volumes:
+//                 - name: jenkins-docker-cfg
+//                   projected:
+//                     sources:
+//                     - secret:
+//                         name: regcred
+//                         items:
+//                           - key: .dockerconfigjson
+//                             path: config.json
+// ''') 
                 // {
                 //     node('kaniko') {
                 //       stages{
