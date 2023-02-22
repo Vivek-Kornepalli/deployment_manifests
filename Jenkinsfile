@@ -5,7 +5,7 @@ pipeline{
         lable Built-In Node
         
     }
-}
+
     
   podTemplate(yaml: '''
               kind: Pod
@@ -61,4 +61,5 @@ pipeline{
         }
     }}
      
+}
 }
