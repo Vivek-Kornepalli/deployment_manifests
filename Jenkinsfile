@@ -1,11 +1,13 @@
 def label = "slave"
+
  
 podTemplate(label: label, containers: [
  containerTemplate(name: 'kaniko', image: 'gcr.io/kaniko-project/executor:debug', command: '/busybox/cat', ttyEnabled: true)
 ],
 volumes: [
    secretVolume(mountPath: '/root/.docker/', secretName: 'regcred')
-]) {
+]) 
+kubernetes{
  node(label) {
    stage('Stage 1: Build with Kaniko') {
      container('kaniko') {
