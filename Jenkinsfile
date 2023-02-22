@@ -89,11 +89,7 @@ pipeline {
     agent none
     stages {
         stage('Build and deploy Docker image') {
-            environment {
-                DOCKER_REGISTRY = 'registry.digitalocean.com/metaphy'
-                DOCKER_IMAGE = 'testkaniko'
-                DOCKER_TAG = 'latest'
-            }
+            
             steps {
                 podTemplate(yaml: '''
 //               kind: Pod
