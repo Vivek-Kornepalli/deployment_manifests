@@ -113,10 +113,10 @@ pipeline {
                     ])
                 ]) {
                     node('kaniko') {
+                      stages{
                         stage('Clone repository') {
                             git branch: 'main',
-                                credentialsId: '<CREDENTIALS_ID>',
-                                url: 'https://github.com/<USER>/<REPO>.git'
+                                url: 'https://github.com/Vivek-Kornepalli/deployment_manifests.git'
                         }
                         stage('Build image') {
                             container('kaniko') {
@@ -128,6 +128,7 @@ pipeline {
                                 sh 'echo "Pushing Docker image to $DOCKER_REGISTRY/$DOCKER_IMAGE:$DOCKER_TAG..."'
                             }
                         }
+                    }
                     }
                 }
             }
