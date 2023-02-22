@@ -1,4 +1,4 @@
-def label = "goweb-1.$BUILD_NUMBER-pipeline"
+def label = "slave"
  
 podTemplate(label: label, containers: [
  containerTemplate(name: 'kaniko', image: 'gcr.io/kaniko-project/executor:debug', command: '/busybox/cat', ttyEnabled: true)
