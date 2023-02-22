@@ -111,30 +111,30 @@ pipeline {
                     ], imagePullSecrets: [
                         kubernetesPullSecret(secretName: 'regcred')
                     ])
-                ]) {
-                    node('kaniko') {
-                      stages{
-                        stage('Clone repository') {
-                          steps{
-                            git branch: 'main',
-                                url: 'https://github.com/Vivek-Kornepalli/deployment_manifests.git'
-                        }}
-                        stage('Build image') {steps{
+                // ]) {
+                //     node('kaniko') {
+                //       stages{
+                //         stage('Clone repository') {
+                //           steps{
+                //             git branch: 'main',
+                //                 url: 'https://github.com/Vivek-Kornepalli/deployment_manifests.git'
+                //         }}
+                //         stage('Build image') {steps{
                         
                         
-                            container('kaniko') {
-                                sh 'echo "Building Docker image..."'
-                            }
-                        }}
-                        stage('Push image') {
-                          steps{
-                            container('kaniko') {
-                                sh 'echo "Pushing Docker image to $DOCKER_REGISTRY/$DOCKER_IMAGE:$DOCKER_TAG..."'
-                            }
-                        }}
-                    }
-                    }
-                }
+                //             container('kaniko') {
+                //                 sh 'echo "Building Docker image..."'
+                //             }
+                //         }}
+                //         stage('Push image') {
+                //           steps{
+                //             container('kaniko') {
+                //                 sh 'echo "Pushing Docker image to $DOCKER_REGISTRY/$DOCKER_IMAGE:$DOCKER_TAG..."'
+                //             }
+                //         }}
+                //     }
+                //     }
+                // }
             }
         }
     }
