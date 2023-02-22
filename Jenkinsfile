@@ -1,9 +1,7 @@
 pipeline{
 
     agent{
-//         kubernetes{
-//             yamlFile 'pods.yaml'
-//         }
+
         lable Built-In Node
         
     }
