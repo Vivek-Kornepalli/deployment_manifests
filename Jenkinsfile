@@ -111,7 +111,8 @@ pipeline {
                     ], imagePullSecrets: [
                         kubernetesPullSecret(secretName: 'regcred')
                     ])
-                // ]) {
+                ]) 
+                // {
                 //     node('kaniko') {
                 //       stages{
                 //         stage('Clone repository') {
