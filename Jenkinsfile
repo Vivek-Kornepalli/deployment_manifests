@@ -85,57 +85,51 @@
 
 
 
-
-
-
 pipeline {
-    agent {
-        kubernetes {
-            // Use the Kaniko image from GCR
-            yaml """
-            apiVersion: v1
-            kind: Pod
-            metadata:
-              labels:
-                app: kaniko
-            spec:
-              containers:
-              - name: kaniko
-                image: gcr.io/kaniko-project/executor:latest
-                // args: ["--dockerfile=<DOCKERFILE_PATH>",
-                //         "--context=<CONTEXT_PATH>",
-                //         "--destination=registry.digitalocean.com/metaphy/<IMAGE_NAME>:<TAG>",
-                //         "--insecure"]
-                volumeMounts:
-                - name: kaniko-secret
-                  mountPath: /kaniko/.docker
-                  readOnly: true
-                imagePullSecrets:
-                - name: regcred
-              volumes:
-              - name: kaniko-secret
-                secret:
-                  secretName: kaniko-secret
-            """
-        }
-    }
+    agent none
     stages {
-        stage('Clone repository') {
-            steps {
-                // Clone the repository
-                git branch: 'main',
-                    url: 'https://github.com/Vivek-Kornepalli/deployment_manifests.git'
+        stage('Build and deploy Docker image') {
+            environment {
+                DOCKER_REGISTRY = 'registry.digitalocean.com/metaphy'
+                DOCKER_IMAGE = 'testkaniko'
+                DOCKER_TAG = 'latest'
             }
-        }
-        stage('Build and deploy image') {
             steps {
-                // Build and deploy the Docker image using Kaniko
-                sh """
-                /kaniko/executor --dockerfile 'pwd'/DockerFile \
-                --context 'pwd' \
-                --destination=registry.digitalocean.com/metaphy/testkaniko"
-                """
-                
+                podTemplate(label: 'kaniko', containers: [
+                    containerTemplate(name: 'kaniko', image: 'gcr.io/kaniko-project/executor:latest', ttyEnabled: true, command: [
+                        '/busybox/sh', '-c'
+                    ], args: [
+                        '/kaniko/executor',
+                        '--dockerfile=/workspace/Dockerfile',
+                        '--context=/workspace',
+                        '--destination=$DOCKER_REGISTRY/$DOCKER_IMAGE:$DOCKER_TAG',
+                        '--insecure'
+                    ], volumeMounts: [
+                        mountVolume(mountPath: '/kaniko/.docker', name: 'kaniko-secret', readOnly: true)
+                    ], envVars: [
+                        secretEnvVar(secretName: 'kaniko-secret', key: '.dockerconfigjson', envVar: 'DOCKER_CONFIG')
+                    ], imagePullSecrets: [
+                        kubernetesPullSecret(secretName: 'regcred')
+                    ])
+                ]) {
+                    node('kaniko') {
+                        stage('Clone repository') {
+                            git branch: 'main',
+                                credentialsId: '<CREDENTIALS_ID>',
+                                url: 'https://github.com/<USER>/<REPO>.git'
+                        }
+                        stage('Build image') {
+                            container('kaniko') {
+                                sh 'echo "Building Docker image..."'
+                            }
+                        }
+                        stage('Push image') {
+                            container('kaniko') {
+                                sh 'echo "Pushing Docker image to $DOCKER_REGISTRY/$DOCKER_IMAGE:$DOCKER_TAG..."'
+                            }
+                        }
+                    }
+                }
             }
         }
     }
