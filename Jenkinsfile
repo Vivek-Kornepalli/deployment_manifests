@@ -1,4 +1,4 @@
-def label = "slave"
+def label = "Built-In Node"
  
 podTemplate(label: label, containers: [
  containerTemplate(name: 'kaniko', image: 'gcr.io/kaniko-project/executor:debug', command: '/busybox/cat', ttyEnabled: true)
