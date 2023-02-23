@@ -16,7 +16,7 @@ containers: [
      container('kaniko'){
        sh '''
        /kaniko/executor --force -f Dockerfile --context=git://github.com/Vivek-Kornepalli/deployment_manifests.git \
-               --destination=registry.digitalocean.com/metaphy/node-test:latest \
+               --destination=registry.digitalocean.com/metaphy/kaniko:node-test-v1 \
                --insecure \
                --skip-tls-verify  \
                -v=debug
