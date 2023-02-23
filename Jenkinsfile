@@ -6,10 +6,9 @@ containers: [
                                 image: 'registry.digitalocean.com/metaphy/kaniko:v2',
                                 command: 'sleep',
                                 args: '99d',
-                                ttyEnabled: true,
-                                imagePullSecrets: [{name: 'regcred'}]
+                                ttyEnabled: true
                             )
-                        ])
+                        ], imagePullSecrets: [{name: 'regcred'}])
 {
  node(label) {
    stage('Stage 1: Build with Kaniko'){
