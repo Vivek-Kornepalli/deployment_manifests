@@ -6,8 +6,7 @@ podTemplate(label: label, containers: [
 ],
 volumes: [
    secretVolume(mountPath: '/root/.docker/', secretName: 'regcred')
-]) 
-kubernetes{
+]) {
  node(label) {
    stage('Stage 1: Build with Kaniko') {
      container('kaniko') {
