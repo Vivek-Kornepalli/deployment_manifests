@@ -1,4 +1,4 @@
-def label = POD_LABEL
+def label = "kube-agent"
 podTemplate(label: label, containers:[
  containerTemplate(name: 'kaniko', image: 'gcr.io/kaniko-project/executor:debug', command: '/busybox/cat', ttyEnabled: true)
 ]){
