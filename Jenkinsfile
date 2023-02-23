@@ -5,7 +5,7 @@ podTemplate(label: label, containers:[
  node(label) {
    stage('Stage 1: Build with Kaniko'){
      container('kaniko'){
-       sh '/kaniko/executor --context=git://github.com/Vivek-Kornepalli/deployment_manifests.git \
+       sh '/kaniko/executor -f Dockerfile --context=git://github.com/Vivek-Kornepalli/deployment_manifests.git \
                --destination=registry.digitalocean.com/metaphy:latest \
                --insecure \
                --skip-tls-verify  \
