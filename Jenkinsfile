@@ -3,18 +3,13 @@ podTemplate(label: label,
 containers: [
                             containerTemplate(
                                 name: 'kaniko',
-                                image: 'gcr.io/kaniko-project/executor:v1.6.0-debug',
+                                image: 'registry.digitalocean.com/metaphy/kaniko:v2',
                                 command: 'sleep',
                                 args: '99d',
                                 ttyEnabled: true
                             )
                         ],
-                        volumes: [
-                            secretVolume(
-                                secretName: 'regcred',
-                                mountPath: '/kaniko/.docker'
-                            )
-                        ])
+                       imagePullSecrets: [name: 'regcred'])
 
 // podTemplate
 // (
