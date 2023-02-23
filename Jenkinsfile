@@ -1,4 +1,4 @@
-def label = "slave"
+def label = POD_LABEL
 podTemplate(label: label, containers:[
  containerTemplate(name: 'kaniko', image: 'gcr.io/kaniko-project/executor:debug', command: '/busybox/cat', ttyEnabled: true)
 ]){
