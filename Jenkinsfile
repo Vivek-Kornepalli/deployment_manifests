@@ -6,38 +6,10 @@ containers: [
                                 image: 'registry.digitalocean.com/metaphy/kaniko:v2',
                                 command: 'sleep',
                                 args: '99d',
-                                ttyEnabled: true
+                                ttyEnabled: true,
+                                imagePullSecrets: {name: 'regcred'}
                             )
-                        ],
-                       imagePullSecrets: [name: 'regcred'])
-
-// podTemplate
-// (
-//   yaml '''
-//               kind: Pod
-//               spec:
-//                 containers:
-//                 - name: kaniko
-//                   image: gcr.io/kaniko-project/executor:v1.6.0-debug
-//                   imagePullPolicy: Always
-//                   command:
-//                   - sleep
-//                   args:
-//                   - 99d
-//                   volumeMounts:
-//                     - name: jenkins-docker-cfg
-//                       mountPath: /kaniko/.docker
-//                 volumes:
-//                 - name: jenkins-docker-cfg
-//                   projected:
-//                     sources:
-//                     - secret:
-//                         name: regcred
-//                         items:
-//                           - key: .dockerconfigjson
-//                             path: config.json
-// '''
-// )
+                        ])
 {
  node(label) {
    stage('Stage 1: Build with Kaniko'){
@@ -56,23 +28,3 @@ containers: [
  }
 }
 
-// pipeline {
-//     agent {lable: "kube-agent"}
-//     stages {
-//         stage('Clone repository') {
-//             steps {
-//                 // Clone the GitHub repository to the workspace
-//                 git branch: 'main', url: 'https://github.com/Vivek-Kornepalli/deployment_manifests.git'
-//             }
-//         }
-//         stage('Build Docker image') {
-//             steps {
-//                 // Run the Kaniko container to build the Docker imag
-//                 container('kaniko') {
-//                     sh '/kaniko/executor --dockerfile=${WORKSPACE}/Dockerfile --context=dir://workspace --destination=registry.digitalocean.com/metaphy:latest'
-//                 }
-//             }
-//         }
-        
-//     }
-// }
