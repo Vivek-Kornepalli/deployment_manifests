@@ -16,7 +16,7 @@
 // }
 
 pipeline {
-    agent any
+    agent kubernetes
     stages {
         stage('Clone repository') {
             steps {
