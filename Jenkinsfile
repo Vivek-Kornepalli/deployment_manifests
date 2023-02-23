@@ -8,7 +8,7 @@ containers: [
                                 args: '99d',
                                 ttyEnabled: true
                             )
-                        ], imagePullSecrets: 'regcred')
+                        ], imagePullSecrets: ['regcred'])
 {
  node(label) {
    stage('Stage 1: Build with Kaniko'){
