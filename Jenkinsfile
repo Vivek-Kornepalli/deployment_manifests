@@ -7,7 +7,7 @@ def label = "kube-agent"
 
 podTemplate
 (
-  yaml: '''
+  yaml '''
               kind: Pod
               spec:
                 containers:
