@@ -33,7 +33,7 @@ pipeline {
         }
         stage('Build Docker image') {
             steps {
-                // Run the Kaniko container to build the Docker image
+                // Run the Kaniko container to build the Docker imag
                 container('kaniko') {
                     sh '/kaniko/executor --dockerfile=${WORKSPACE}/Dockerfile --context=dir://workspace --destination=registry.digitalocean.com/metaphy:latest'
                 }
