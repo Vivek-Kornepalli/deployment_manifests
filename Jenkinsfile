@@ -7,7 +7,7 @@ containers: [
                                 command: 'sleep',
                                 args: '99d',
                                 ttyEnabled: true,
-                                imagePullSecrets: {name: 'regcred'}
+                                imagePullSecrets: [{name: 'regcred'}]
                             )
                         ])
 {
