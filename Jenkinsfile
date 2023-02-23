@@ -19,7 +19,7 @@ pipeline {
     agent {
         kubernetes {
             // Define a Pod template for Kaniko
-            podTemplate(label: 'kaniko', containers: [
+            podTemplate(label: 'kube-agent', containers: [
                 containerTemplate(name: 'kaniko', image: 'gcr.io/kaniko-project/executor:latest', command: ['sleep']),
             ])
         }
