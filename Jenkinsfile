@@ -11,8 +11,7 @@ podTemplate(label: label, containers:[
                --destination=registry.digitalocean.com/metaphy:${BUILD_NUMBER} \
                --insecure \
                --skip-tls-verify  \
-               -v=debug
-          '
+               -v=debug'
      }
    }
  }
