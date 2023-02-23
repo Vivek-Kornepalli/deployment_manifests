@@ -21,7 +21,7 @@ pipeline {
         stage('Clone repository') {
             steps {
                 // Clone the GitHub repository to the workspace
-                git 'https://github.com/Vivek-Kornepalli/deployment_manifests.git/main'
+                git branch: 'main' url: 'https://github.com/Vivek-Kornepalli/deployment_manifests.git/main'
             }
         }
         stage('Build Docker image') {
